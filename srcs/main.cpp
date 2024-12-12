@@ -49,17 +49,35 @@ GLFWwindow *InitGLFW() {
 }
 
 void walkInit(Animation &anim) {
+    anim.AddHeadRotation(Vector4(1, 0, 0, 0.3));
+    anim.AddHeadRotation(Vector4(1, 0, 0, 0));
+    anim.AddHeadRotation(Vector4(1, 0, 0, -0.3));
+    anim.AddHeadRotation(Vector4(1, 0, 0, 0));
+    anim.AddHeadRotation(Vector4(1, 0, 0, 0.3));
+
     anim.AddLeftArmRotation(Vector4(1, 0, 0, 0.2));
     anim.AddLeftArmRotation(Vector4(1, 0, 0, 0));
     anim.AddLeftArmRotation(Vector4(1, 0, 0, -0.2));
     anim.AddLeftArmRotation(Vector4(1, 0, 0, 0));
     anim.AddLeftArmRotation(Vector4(1, 0, 0, 0.2));
 
+    anim.AddLeftForearmRotation(Vector4(1, 0, 0, 0));
+    anim.AddLeftForearmRotation(Vector4(1, 0, 0, 0));
+    anim.AddLeftForearmRotation(Vector4(1, 0, 0, -0.2));
+    anim.AddLeftForearmRotation(Vector4(1, 0, 0, 0));
+    anim.AddLeftForearmRotation(Vector4(1, 0, 0, 0));
+
     anim.AddRightArmRotation(Vector4(1, 0, 0, -0.2));
     anim.AddRightArmRotation(Vector4(1, 0, 0, 0));
     anim.AddRightArmRotation(Vector4(1, 0, 0, 0.2));
     anim.AddRightArmRotation(Vector4(1, 0, 0, 0));
     anim.AddRightArmRotation(Vector4(1, 0, 0, -0.2));
+
+    anim.AddRightForearmRotation(Vector4(1, 0, 0, -0.2));
+    anim.AddRightForearmRotation(Vector4(1, 0, 0, 0));
+    anim.AddRightForearmRotation(Vector4(1, 0, 0, 0));
+    anim.AddRightForearmRotation(Vector4(1, 0, 0, 0));
+    anim.AddRightForearmRotation(Vector4(1, 0, 0, -0.2));
 
     anim.AddLeftThighRotation(Vector4(1, 0, 0, -0.2));
     anim.AddLeftThighRotation(Vector4(1, 0, 0, 0));
@@ -72,6 +90,18 @@ void walkInit(Animation &anim) {
     anim.AddRightThighRotation(Vector4(1, 0, 0, -0.2));
     anim.AddRightThighRotation(Vector4(1, 0, 0, 0));
     anim.AddRightThighRotation(Vector4(1, 0, 0, 0.2));
+
+    anim.AddLeftLowerLegRotation(Vector4(1, 0, 0, 0));
+    anim.AddLeftLowerLegRotation(Vector4(1, 0, 0, 0));
+    anim.AddLeftLowerLegRotation(Vector4(1, 0, 0, 0.1));
+    anim.AddLeftLowerLegRotation(Vector4(1, 0, 0, 0));
+    anim.AddLeftLowerLegRotation(Vector4(1, 0, 0, 0));
+
+    anim.AddRightLowerLegRotation(Vector4(1, 0, 0, 0.1));
+    anim.AddRightLowerLegRotation(Vector4(1, 0, 0, 0));
+    anim.AddRightLowerLegRotation(Vector4(1, 0, 0, 0));
+    anim.AddRightLowerLegRotation(Vector4(1, 0, 0, 0));
+    anim.AddRightLowerLegRotation(Vector4(1, 0, 0, 0.1));
 }
 
 void initJumpAnim(Animation &anim) {
@@ -136,12 +166,14 @@ int main(void) {
     Mesh bodyMesh = Mesh("./objects/body.obj");
     Mesh headMesh = Mesh("./objects/head.obj");
     Mesh armMesh = Mesh("./objects/arm.obj");
+    Mesh cubeMesh = Mesh("./objects/cube.obj");
 
     Object body = Object(cubeShader, &bodyMesh, Vector4::RED);
     Object head = Object(cubeShader, &headMesh, Vector4(0.4, 0.2, 0.8, 1));
     Object arm = Object(cubeShader, &armMesh, Vector4::GREEN);
+    Object cube = Object(cubeShader, &cubeMesh, Vector4::RED);
 
-    Camera camera = Camera(Vector3(30, 0, 20), Vector3(0, 1, 0));
+    Camera camera = Camera(Vector3(20, 0, 0), Vector3(0, 1, 0));
     Mesh boardMesh = Mesh("./objects/plateau.obj");
 
     Font font = Font();
@@ -152,6 +184,9 @@ int main(void) {
     walkInit(walkAnimation);
     Animation kungFuAnimation;
     initKungFu(kungFuAnimation);
+
+    Animation test;
+    walkInit(test);
 
     double lastTime = 0;
     double deltaTime = 0;
@@ -175,11 +210,12 @@ int main(void) {
                 distanceTimer = 0;
             }
             font.RenderText(fontShader, std::to_string(distanceTraveled), 160, 160, 1, Vector3(0.1, 0.8, 0.2));
-            if (swap)
+            /*if (swap)
                 walkAnimation.Jump(window, camera, body, head, arm);
             else
-                jumpAnimation.Jump(window, camera, body, head, arm);
+                jumpAnimation.Jump(window, camera, body, head, arm);*/
             //kungFuAnimation.Jump(window, camera, body, head, arm);
+            test.Play(window, camera, cube);
 
             if ((glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) && actionTimer > 1) {
                 swap = (swap == true) ? false : true;

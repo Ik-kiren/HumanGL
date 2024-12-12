@@ -54,6 +54,7 @@ class Object {
     void                    drawMesh(GLFWwindow *window, Camera &camera);
     void                    drawMesh(GLFWwindow *window, Camera camera, Vector3 lightPos);
     void                    drawMesh(GLFWwindow *window, Camera &camera, Matrix4 newModel);
+    void                    drawMesh(GLFWwindow *window, Camera &camera, Matrix4 newModel, Vector4 color);
     void                    TextureTransition();
     Object                  *clone();
     void                    print();

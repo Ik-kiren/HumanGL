@@ -26,6 +26,15 @@ Matrix4 Translate(Matrix4 mat, Vector3 vec) {
     return translationMat * mat;
 }
 
+Matrix4 Translate(Matrix4 mat, Vector3 vec, bool local) {
+    Matrix4 translationMat = Matrix4(1.0);
+    translationMat[3] = Vector4(vec);
+    if (local)
+        return translationMat * mat;
+    else
+        return mat * translationMat;
+}
+
 Matrix4 Transposed(Matrix4 mat) {
     Matrix4 newMat = Matrix4(
         Vector4(mat[0][0], mat[1][0], mat[2][0], mat[3][0]),
@@ -65,6 +74,24 @@ Matrix4 Rotate(Matrix4 mat, float radians, Vector3 axis) {
     return rotateMat * mat;
 }
 
+Matrix4 Rotate(Matrix4 mat, float radians, Vector3 axis, bool local) {
+    Matrix4 rotateMat = Matrix4(
+        Vector4(cos(radians) + powf(axis[0], 2.0) * (1 - cos(radians)),
+            axis[0] * axis[1] * (1 - cos(radians)) + axis[2] * sin(radians),
+            axis[0] * axis[2] * (1 - cos(radians)) - axis[1] * sin(radians), 0),
+        Vector4(axis[1] * axis[0] * (1 - cos(radians)) - axis[2] * sin(radians),
+            cos(radians) + powf(axis[1], 2.0) * (1 - cos(radians)),
+            axis[1] * axis[2] * (1 - cos(radians)) + axis[0] * sin(radians), 0),
+        Vector4(axis[2] * axis[0] * (1 - cos(radians)) + axis[1] * sin(radians),
+            axis[2] * axis[1] * (1 - cos(radians)) - axis[0] * sin(radians),
+            cos(radians) + powf(axis[2], 2.0) * (1 - cos(radians)), 0),
+        Vector4(0, 0, 0, 1));
+    if (local)
+        return rotateMat * mat;
+    else
+        return mat * rotateMat;
+}
+
 Matrix4 Scale(Matrix4 mat, float scale) {
     Matrix4 scaleMatrix = Matrix4(scale);
     scaleMatrix[3][3] = 1;
@@ -78,6 +105,17 @@ Matrix4 Scale(Matrix4 mat, Vector3 vec) {
     scaleMatrix[1][1] = vec.y;
     scaleMatrix[2][2] = vec.z;
     return scaleMatrix * mat;
+}
+
+Matrix4 Scale(Matrix4 mat, Vector3 vec, bool local) {
+    Matrix4 scaleMatrix = Matrix4(1);
+    scaleMatrix[0][0] = vec.x;
+    scaleMatrix[1][1] = vec.y;
+    scaleMatrix[2][2] = vec.z;
+    if (local)
+        return scaleMatrix * mat;
+    else
+        return mat * scaleMatrix;
 }
 
 Matrix4 Perspective(float fov, float aspectRatio, float near, float far) {

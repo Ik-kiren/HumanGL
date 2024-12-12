@@ -83,8 +83,8 @@ Matrix4 Matrix4::operator*(Matrix4 rhs) {
 Vector4 Matrix4::operator*(Vector4 rhs) {
     Vector4 vec = Vector4(0, 0, 0, 0);
     for (int i = 0; i < 4; i++) {
-        vec[i] = matrix[i][0] * rhs[0] + matrix[i][1] * rhs[1] + matrix[i][2] * rhs[2] +
-            matrix[i][3] * rhs[3];
+        vec[i] = matrix[0][i] * rhs[i] + matrix[1][i] * rhs[i] + matrix[2][i] * rhs[i] +
+            matrix[3][i] * rhs[i];
     }
     return vec;
 }

@@ -9,7 +9,7 @@ Object::Object() {}
 Object::Object(Shader &meshShader, Mesh *mesh)
     : vertices(mesh->GetMeshVertexArray()), meshShader(meshShader), mesh(mesh) {
     model = Matrix4(1.0f);
-    projection = Perspective(30.0f, 1920 / 1200, 0.1f, 100.0f);
+    projection = Perspective(60.0f, 1920 / 1200, 0.1f, 100.0f);
     // projection = Orthographique(-19, 19, -19, 19, 0, 40);
     this->color = Vector4(1.0, 1.0, 1.0, 0.5);
     timer = 0;
@@ -27,7 +27,7 @@ Object::Object(Shader &meshShader, Mesh *mesh)
 Object::Object(Shader &meshShader, Mesh *mesh, Vector3 color)
     : vertices(mesh->GetMeshVertexArray()), meshShader(meshShader), mesh(mesh) {
     model = Matrix4(1.0f);
-    projection = Perspective(30.0f, 1920 / 1200, 0.1f, 100.0f);
+    projection = Perspective(60.0f, 1920 / 1200, 0.1f, 100.0f);
     // projection = Orthographique(-19, 19, -19, 19, 0, 40);
     this->color = Vector4(color.x, color.y, color.z, 1.0);
     timer = 0;
@@ -45,7 +45,7 @@ Object::Object(Shader &meshShader, Mesh *mesh, Vector3 color)
 Object::Object(Shader &meshShader, Mesh *mesh, Vector4 color)
     : vertices(mesh->GetMeshVertexArray()), meshShader(meshShader), mesh(mesh), color(color) {
     model = Matrix4(1.0f);
-    projection = Perspective(30.0f, 1920 / 1200, 0.1f, 100.0f);
+    projection = Perspective(60.0f, 1920 / 1200, 0.1f, 100.0f);
     // projection = Orthographique(-19, 19, -19, 19, 0, 40);
     timer = 0;
     position = Vector3(0, 0, 0);
@@ -183,6 +183,12 @@ void    Object::drawMesh(GLFWwindow *window, Camera &camera) {
 }
 
 void Object::drawMesh(GLFWwindow *window, Camera &camera, Matrix4 newModel) {
+    model = newModel;
+    drawMesh(window, camera);
+}
+
+void Object::drawMesh(GLFWwindow *window, Camera &camera, Matrix4 newModel, Vector4 color) {
+    this->color = color;
     model = newModel;
     drawMesh(window, camera);
 }

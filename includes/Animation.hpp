@@ -15,6 +15,7 @@ class Animation {
     double      deltaTime;
 
     std::vector<Vector3> headPosition;
+    std::vector<Vector4> headRotation;
     std::vector<Vector3> bodyPosition;
     std::vector<Vector3> rightArmPosition;
     std::vector<Vector4> rightArmRotation;
@@ -38,6 +39,7 @@ class Animation {
     ~Animation();
 
     void AddHeadPosition(Vector3 pos);
+    void AddHeadRotation(Vector4 radians);
     void AddBodyPosition(Vector3 pos);
     void AddRightArmPosition(Vector3 pos);
     void AddRightArmRotation(Vector4 radians);
@@ -62,5 +64,5 @@ class Animation {
     void AddLowerLegsRotation(Vector4 radians);
 
     void Jump(GLFWwindow *window, Camera &camera, Object &body, Object &head, Object &arm);
-
+    void Play(GLFWwindow *window, Camera &camera, Object &cube);
 };
