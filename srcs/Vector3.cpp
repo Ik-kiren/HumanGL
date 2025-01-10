@@ -69,6 +69,15 @@ Vector3 &Vector3::operator/(float rhs) {
     return *this;
 }
 
+Vector3 &Vector3::operator/(Vector3 rhs) {
+    if (rhs.x == 0 || rhs.y == 0 || rhs.z == 0)
+        return *this;
+    x = x / rhs.x;
+    y = y / rhs.y;
+    z = z / rhs.z;
+    return *this;
+}
+
 Vector3 Vector3::operator-(Vector3 rhs) {
     return Vector3(x - rhs.x, y - rhs.y, z - rhs.z);
 }

@@ -15,27 +15,27 @@ Animation::Animation() : animationTimer(0), stepTime(3.14), stepTimer(0), step(0
     window = NULL;
     camera = NULL;
 
-    initHeadPosition = Vector3(0, 4.7, 0);
-    initBodyPosition = Vector3(0, 0, 0);
-    initRightArmPosition = Vector3(2, 1.7, 0);
-    initRightForearmPosition = Vector3(0, -2.5, 0);
-    initLeftArmPosition = Vector3(-2, 1.7, 0);
-    initLeftForearmPosition = Vector3(0, -2.5, 0);
-    initRightThighPosition = Vector3(1, -3, 0);
-    initRightLowerLegPosition = Vector3(0, -2.8, 0);
-    initLeftThighPosition = Vector3(-1, -3, 0);
-    initLeftLowerLegPosition = Vector3(0, -2.8, 0);
+    initPoses[HEAD] = Vector3(0, 4.7, 0);
+    initPoses[BODY] = Vector3(0, 0, 0);
+    initPoses[RIGHTARM] = Vector3(2, 1.7, 0);
+    initPoses[RIGHTFOREARM] = Vector3(0, -2.5, 0);
+    initPoses[LEFTARM] = Vector3(-2, 1.7, 0);
+    initPoses[LEFTFOREARM] = Vector3(0, -2.5, 0);
+    initPoses[RIGHTTHIGH] = Vector3(1, -3, 0);
+    initPoses[RIGHTLOWERLEG] = Vector3(0, -2.8, 0);
+    initPoses[LEFTTHIGH] = Vector3(-1, -3, 0);
+    initPoses[LEFTLOWERLEG] = Vector3(0, -2.8, 0);
 
-    headScale = Vector3(0.6, 0.6, 0.6);
-    bodyScale = Vector3(1.6, 3.12, 0.3);
-    rightArmScale = Vector3(0.3, 1, 0.1);
-    rightForearmScale = Vector3(0.3, 1, 0.1);
-    leftArmScale = Vector3(0.3, 1, 0.1);
-    LeftForearmScale = Vector3(0.3, 1, 0.1);
-    rightThighScale = Vector3(0.3, 1, 0.1);
-    rightLowerLegScale = Vector3(0.3, 1, 0.1);
-    leftThighScale = Vector3(0.3, 1, 0.1);
-    leftLowerLegScale = Vector3(0.3, 1, 0.1);
+    partsScale[HEAD] = Vector3(0.6, 0.6, 0.6);
+    partsScale[BODY] = Vector3(1.6, 3.12, 0.3);
+    partsScale[RIGHTARM] = Vector3(0.3, 1, 0.1);
+    partsScale[RIGHTFOREARM] = Vector3(0.3, 1, 0.1);
+    partsScale[LEFTARM] = Vector3(0.3, 1, 0.1);
+    partsScale[LEFTFOREARM] = Vector3(0.3, 1, 0.1);
+    partsScale[RIGHTTHIGH] = Vector3(0.3, 1, 0.1);
+    partsScale[RIGHTLOWERLEG] = Vector3(0.3, 1, 0.1);
+    partsScale[LEFTTHIGH] = Vector3(0.3, 1, 0.1);
+    partsScale[LEFTLOWERLEG] = Vector3(0.3, 1, 0.1);
 }
 
 Animation::~Animation() {}
@@ -224,18 +224,18 @@ void Animation::AddLowerLegsRotation(Vector4 radians) {
 
 void Animation::HeadAnimation(MatrixStack &mat) {
     mat.Push();
-    mat.translate(initHeadPosition - Vector3(0, 1, 0), false);
+    mat.translate(initPoses[HEAD] - Vector3(0, 1, 0), false);
     if (headRotation.size() > 1)
         mat.rotate(lerp(headRotation[step].w, headRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(headRotation[step]), true);
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), headScale, true), Vector4::RED);
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[HEAD], true), Vector4::RED);
     mat.Pop();
 }
 
 void Animation::BodyAnimation(MatrixStack &mat) {
-    mat.translate(initBodyPosition, false);
+    mat.translate(initPoses[BODY], false);
     if (bodyPosition.size() > 1)
         mat.translate(Vector3(bodyPosition[step].x, lerp(bodyPosition[step].y, bodyPosition[step + 1].y, fmod(stepTimer, stepTime) / stepTime), bodyPosition[step].z));
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), bodyScale, true), Vector4::GREEN);
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[BODY], true), Vector4::GREEN);
 }
 
 void Animation::ArmsAnimation(MatrixStack &mat) {
@@ -247,15 +247,15 @@ void Animation::ArmsAnimation(MatrixStack &mat) {
     if (rightArmRotation.size() > 1)
         mat.rotate(lerp(rightArmRotation[step].w, rightArmRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(rightArmRotation[step]), false);
     mat.translate(Vector3(0, 0.7, 0), false);
-    mat.translate(initRightArmPosition, false);
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), rightArmScale, true));
+    mat.translate(initPoses[RIGHTARM], false);
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[RIGHTARM], true));
     mat.Push();
-    mat.translate(initRightForearmPosition + Vector3(0, 0.5, 0), true);
+    mat.translate(initPoses[RIGHTFOREARM] + Vector3(0, 0.5, 0), true);
     if (rightForearmPosition.size() > 1)
         mat.translate(Vector3(lerp(rightForearmPosition[step].x, rightForearmPosition[step + 1].x, fmod(stepTimer, stepTime) / stepTime), lerp(rightForearmPosition[step].y, rightForearmPosition[step + 1].y, fmod(stepTimer, stepTime) / stepTime), lerp(rightForearmPosition[step].z, rightForearmPosition[step + 1].z, fmod(stepTimer, stepTime) / stepTime)), true);
     if (rightForearmRotation.size() > 1)
         mat.rotate(lerp(rightForearmRotation[step].w, rightForearmRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(rightForearmRotation[step]), true);
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), rightForearmScale, true));
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[RIGHTFOREARM], true));
     mat.Pop();
     mat.Pop();
     //left
@@ -266,15 +266,15 @@ void Animation::ArmsAnimation(MatrixStack &mat) {
     if (leftArmRotation.size() > 1)
         mat.rotate(lerp(leftArmRotation[step].w, leftArmRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(leftArmRotation[step]), false);
     mat.translate(Vector3(0, 0.7, 0), false);
-    mat.translate(initLeftArmPosition, false);
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), leftArmScale, true));
+    mat.translate(initPoses[LEFTARM], false);
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[LEFTARM], true));
     mat.Push();
-    mat.translate(initLeftForearmPosition + Vector3(0, 0.5, 0), true);
+    mat.translate(initPoses[LEFTFOREARM] + Vector3(0, 0.5, 0), true);
     if (leftForearmPosition.size() > 1)
         mat.translate(Vector3(lerp(leftForearmPosition[step].x, leftForearmPosition[step + 1].x, fmod(stepTimer, stepTime) / stepTime), lerp(leftForearmPosition[step].y, leftForearmPosition[step + 1].y, fmod(stepTimer, stepTime) / stepTime), lerp(leftForearmPosition[step].z, leftForearmPosition[step + 1].z, fmod(stepTimer, stepTime) / stepTime)), true);
     if (leftForearmRotation.size() > 1)
         mat.rotate(lerp(leftForearmRotation[step].w, leftForearmRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(leftForearmRotation[step]), true);
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), LeftForearmScale, true));
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[LEFTFOREARM], true));
     mat.Pop();
     mat.Pop();
 }
@@ -287,15 +287,15 @@ void Animation::LegsAnimation(MatrixStack &mat) {
     if (rightThighRotation.size() > 1)
         mat.rotate(lerp(rightThighRotation[step].w, rightThighRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(rightThighRotation[step]), true);
     mat.translate(Vector3(0, -1.4, 0),  true);
-    mat.translate(initRightThighPosition + Vector3(0, 0.5, 0), false);
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), rightThighScale, true));
+    mat.translate(initPoses[RIGHTTHIGH] + Vector3(0, 0.5, 0), false);
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[RIGHTTHIGH], true));
     mat.Push();
-    mat.translate(initRightLowerLegPosition + Vector3(0, 1, 0), true);
+    mat.translate(initPoses[RIGHTLOWERLEG] + Vector3(0, 1, 0), true);
     if (rightLowerLegPosition.size() > 1)
         mat.translate(Vector3(lerp(rightLowerLegPosition[step].x, rightLowerLegPosition[step + 1].x, fmod(stepTimer, stepTime) / stepTime), lerp(rightLowerLegPosition[step].y, rightLowerLegPosition[step + 1].y, fmod(stepTimer, stepTime) / stepTime), lerp(rightLowerLegPosition[step].z, rightLowerLegPosition[step + 1].z, fmod(stepTimer, stepTime) / stepTime)), true);
     if (rightLowerLegRotation.size() > 1)
         mat.rotate(lerp(rightLowerLegRotation[step].w, rightLowerLegRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(rightLowerLegRotation[step]));
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), rightLowerLegScale, true));
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[RIGHTLOWERLEG], true));
     mat.Pop();
     mat.Pop();
 
@@ -306,20 +306,31 @@ void Animation::LegsAnimation(MatrixStack &mat) {
     if (leftThighRotation.size() > 1)
         mat.rotate(lerp(leftThighRotation[step].w, leftThighRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(leftThighRotation[step]));
     mat.translate(Vector3(0, -1.4, 0),  true);
-    mat.translate(initLeftThighPosition + Vector3(0, 0.5, 0), false);
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), leftThighScale, true));
+    mat.translate(initPoses[LEFTTHIGH] + Vector3(0, 0.5, 0), false);
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[LEFTTHIGH], true));
     mat.Push();
-    mat.translate(initLeftLowerLegPosition + Vector3(0, 1, 0), true);
+    mat.translate(initPoses[LEFTLOWERLEG] + Vector3(0, 1, 0), true);
     if (leftLowerLegPosition.size() > 1)
         mat.translate(Vector3(lerp(leftLowerLegPosition[step].x, leftLowerLegPosition[step + 1].x, fmod(stepTimer, stepTime) / stepTime), lerp(leftLowerLegPosition[step].y, leftLowerLegPosition[step + 1].y, fmod(stepTimer, stepTime) / stepTime), lerp(leftLowerLegPosition[step].z, leftLowerLegPosition[step + 1].z, fmod(stepTimer, stepTime) / stepTime)), true);
     if (leftLowerLegRotation.size() > 1)
         mat.rotate(lerp(leftLowerLegRotation[step].w, leftLowerLegRotation[step + 1].w, fmod(stepTimer, stepTime) / stepTime), Vector3(leftLowerLegRotation[step]));
-    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), leftLowerLegScale, true));
+    cube->drawMesh(window, *camera, Scale(mat.GetMatrix(), partsScale[LEFTLOWERLEG], true));
     mat.Pop();
     mat.Pop();
 }
 
 void Animation::Play(GLFWwindow *window, Camera &camera, Object &cube) {
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+        for (int i = 0; i < 10; i++) {
+            partsScale[i] = partsScale[i] * Vector3(1.01, 1.01, 1.01);
+            initPoses[i] = initPoses[i] * Vector3(1.01, 1.01, 1.01);
+        }
+    } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        for (int i = 0; i < 10; i++) {
+            partsScale[i] = partsScale[i] / Vector3(1.01, 1.01, 1.01);
+            initPoses[i] = initPoses[i] / Vector3(1.01, 1.01, 1.01);
+        }
+    }
     this->window = window;
     this->camera = &camera;
     this->cube = &cube;

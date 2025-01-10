@@ -129,6 +129,7 @@ void walkInit(Animation &anim) {
 }
 
 void initJumpAnim(Animation &anim) {
+    anim.AddBodyPosition(Vector3(0, 0, 0));
     anim.AddBodyPosition(Vector3(0, 3, 0));
     anim.AddBodyPosition(Vector3(0, 6, 0));
     anim.AddBodyPosition(Vector3(0, 3, 0));
@@ -139,6 +140,12 @@ void initJumpAnim(Animation &anim) {
     anim.AddThighsRotation(Vector4(1, 0, 0, 0));
     anim.AddThighsRotation(Vector4(1, 0, 0, 0));
     anim.AddThighsRotation(Vector4(1, 0, 0, -0.2));
+
+    anim.AddLowerLegsPosition(Vector3(0, 0.3, -1));
+    anim.AddLowerLegsPosition(Vector3(0, 0, 0));
+    anim.AddLowerLegsPosition(Vector3(0, 0, 0));
+    anim.AddLowerLegsPosition(Vector3(0, 0, 0));
+    anim.AddLowerLegsPosition(Vector3(0, 0.3, -1));
 
     anim.AddLowerLegsRotation(Vector4(1, 0, 0, 0.4));
     anim.AddLowerLegsRotation(Vector4(1, 0, 0, 0));
@@ -197,7 +204,7 @@ int main(void) {
     Object arm = Object(cubeShader, &armMesh, Vector4::GREEN);
     Object cube = Object(cubeShader, &cubeMesh, Vector4::RED);
 
-    Camera camera = Camera(Vector3(15, 0, 15), Vector3(0, 1, 0));
+    Camera camera = Camera(Vector3(15, 0, 0), Vector3(0, 1, 0));
     Mesh boardMesh = Mesh("./objects/plateau.obj");
 
     Font font = Font();
@@ -208,9 +215,7 @@ int main(void) {
     walkInit(walkAnimation);
     Animation kungFuAnimation;
     initKungFu(kungFuAnimation);
-
-    Animation test;
-    walkInit(test);
+    Animation idleAnimation;
 
     double lastTime = 0;
     double deltaTime = 0;
@@ -218,8 +223,7 @@ int main(void) {
     double actionTimer = 0;
     double distanceTimer = 0;
     long double distanceTraveled = 0;
-
-    bool swap = true;
+    int currentAnimationId = 0;
     while ((glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
         glfwWindowShouldClose(window) == 0)) {
             glClearColor(0.0f, 0.45f, 0.3f, 0.0f);
@@ -233,16 +237,16 @@ int main(void) {
                 distanceTraveled += 120.0 / 100.0;
                 distanceTimer = 0;
             }
-            font.RenderText(fontShader, std::to_string(test.GetStep()), 160, 160, 1, Vector3(0.1, 0.8, 0.2));
-            /*if (swap)
-                walkAnimation.Jump(window, camera, body, head, arm);
-            else
-                jumpAnimation.Jump(window, camera, body, head, arm);*/
-            //kungFuAnimation.Jump(window, camera, body, head, arm);
-            test.Play(window, camera, cube);
-
+            font.RenderText(fontShader, std::to_string(jumpAnimation.GetStep()), 160, 160, 1, Vector3(0.1, 0.8, 0.2));
+            if (currentAnimationId == 0)
+                idleAnimation.Play(window, camera, cube);
+            else if (currentAnimationId == 1)
+                walkAnimation.Play(window, camera, cube);
+            else if (currentAnimationId == 2)
+                jumpAnimation.Play(window, camera, cube);
+            //kungFuAnimation.Play(window, camera, body, head, arm);
             if ((glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) && actionTimer > 1) {
-                swap = (swap == true) ? false : true;
+                currentAnimationId = (currentAnimationId == 2) ? 0 : currentAnimationId + 1;
                 actionTimer = 0;
             }
             glfwSwapBuffers(window);

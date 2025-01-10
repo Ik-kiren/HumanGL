@@ -19,29 +19,11 @@ class Animation {
     GLFWwindow  *window;
     Camera      *camera;
 
-    enum PARTS {HEAD, BODY, RIGHTARM, LEFTARM, RIGHTFOREARM, LEFTFOREARM, RIGHTTHIGH, LEFTTHIGH, RIGHTLOWERLEG, LEFTLOWERLEG};
+    enum PARTS {HEAD, BODY, RIGHTARM, RIGHTFOREARM, LEFTARM, LEFTFOREARM, RIGHTTHIGH, RIGHTLOWERLEG, LEFTTHIGH, LEFTLOWERLEG};
 
-    Vector3 initHeadPosition;
-    Vector3 initBodyPosition;
-    Vector3 initRightArmPosition;
-    Vector3 initRightForearmPosition;
-    Vector3 initLeftArmPosition;
-    Vector3 initLeftForearmPosition;
-    Vector3 initRightThighPosition;
-    Vector3 initRightLowerLegPosition;
-    Vector3 initLeftThighPosition;
-    Vector3 initLeftLowerLegPosition;
+    Vector3 initPoses[10];
 
-    Vector3 headScale;
-    Vector3 bodyScale;
-    Vector3 rightArmScale;
-    Vector3 rightForearmScale;
-    Vector3 leftArmScale;
-    Vector3 LeftForearmScale;
-    Vector3 rightThighScale;
-    Vector3 rightLowerLegScale;
-    Vector3 leftThighScale;
-    Vector3 leftLowerLegScale;
+    Vector3 partsScale[10];
 
     std::vector<Vector3> headPosition;
     std::vector<Vector4> headRotation;
