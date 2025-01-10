@@ -70,6 +70,7 @@ class Animation {
     void AddLeftThighRotation(Vector4 radians);
     void AddLeftLowerLegPosition(Vector3 pos);
     void AddLeftLowerLegRotation(Vector4 radians);
+    void AddArmsPosition(Vector3 pos);
     void AddArmsRotation(Vector4 radians);
     void AddThighsPosition(Vector3 pos);
     void AddThighsRotation(Vector4 radians);

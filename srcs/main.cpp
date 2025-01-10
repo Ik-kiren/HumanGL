@@ -153,6 +153,12 @@ void initJumpAnim(Animation &anim) {
     anim.AddLowerLegsRotation(Vector4(1, 0, 0, 0));
     anim.AddLowerLegsRotation(Vector4(1, 0, 0, 0.4));
 
+    anim.AddArmsPosition(Vector3(0, 0, 0.1));
+    anim.AddArmsPosition(Vector3(0, 0, 0));
+    anim.AddArmsPosition(Vector3(0, 0, 0));
+    anim.AddArmsPosition(Vector3(0, 0, 0));
+    anim.AddArmsPosition(Vector3(0, 0, 0.1));
+
     anim.AddArmsRotation(Vector4(1, 0, 0, -0.2));
     anim.AddArmsRotation(Vector4(1, 0, 0, 0));
     anim.AddArmsRotation(Vector4(1, 0, 0, 0));
@@ -238,6 +244,8 @@ int main(void) {
                 distanceTimer = 0;
             }
             font.RenderText(fontShader, std::to_string(jumpAnimation.GetStep()), 160, 160, 1, Vector3(0.1, 0.8, 0.2));
+            font.RenderText(fontShader, "<", 360, 160, 1, Vector3(0.1, 0.8, 0.2));
+            font.RenderText(fontShader, ">", 400, 160, 1, Vector3(0.1, 0.8, 0.2));
             if (currentAnimationId == 0)
                 idleAnimation.Play(window, camera, cube);
             else if (currentAnimationId == 1)

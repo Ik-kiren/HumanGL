@@ -177,6 +177,11 @@ void Animation::AddLeftLowerLegRotation(Vector4 radians) {
     }
 }
 
+void Animation::AddArmsPosition(Vector3 pos) {
+    AddRightArmPosition(pos);
+    AddLeftArmPosition(pos);
+}
+
 void Animation::AddArmsRotation(Vector4 radians) {
     AddRightArmRotation(radians);
     AddLeftArmRotation(radians);
