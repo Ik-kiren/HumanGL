@@ -2,6 +2,7 @@
 #include <vector>
 #include "../includes/Camera.hpp"
 #include "../includes/Object.hpp"
+#include "../includes/MatrixStack.hpp"
 
 class Animation {
  private:
@@ -13,6 +14,34 @@ class Animation {
     double      nowTime;
     double      lastTime;
     double      deltaTime;
+
+    Object      *cube;
+    GLFWwindow  *window;
+    Camera      *camera;
+
+    enum PARTS {HEAD, BODY, RIGHTARM, LEFTARM, RIGHTFOREARM, LEFTFOREARM, RIGHTTHIGH, LEFTTHIGH, RIGHTLOWERLEG, LEFTLOWERLEG};
+
+    Vector3 initHeadPosition;
+    Vector3 initBodyPosition;
+    Vector3 initRightArmPosition;
+    Vector3 initRightForearmPosition;
+    Vector3 initLeftArmPosition;
+    Vector3 initLeftForearmPosition;
+    Vector3 initRightThighPosition;
+    Vector3 initRightLowerLegPosition;
+    Vector3 initLeftThighPosition;
+    Vector3 initLeftLowerLegPosition;
+
+    Vector3 headScale;
+    Vector3 bodyScale;
+    Vector3 rightArmScale;
+    Vector3 rightForearmScale;
+    Vector3 leftArmScale;
+    Vector3 LeftForearmScale;
+    Vector3 rightThighScale;
+    Vector3 rightLowerLegScale;
+    Vector3 leftThighScale;
+    Vector3 leftLowerLegScale;
 
     std::vector<Vector3> headPosition;
     std::vector<Vector4> headRotation;
@@ -38,6 +67,8 @@ class Animation {
     Animation();
     ~Animation();
 
+    int GetStep();
+
     void AddHeadPosition(Vector3 pos);
     void AddHeadRotation(Vector4 radians);
     void AddBodyPosition(Vector3 pos);
@@ -62,6 +93,11 @@ class Animation {
     void AddThighsRotation(Vector4 radians);
     void AddLowerLegsPosition(Vector3 pos);
     void AddLowerLegsRotation(Vector4 radians);
+    
+    void HeadAnimation(MatrixStack &mat);
+    void BodyAnimation(MatrixStack &mat);
+    void ArmsAnimation(MatrixStack &mat);
+    void LegsAnimation(MatrixStack &mat);
 
     void Jump(GLFWwindow *window, Camera &camera, Object &body, Object &head, Object &arm);
     void Play(GLFWwindow *window, Camera &camera, Object &cube);
